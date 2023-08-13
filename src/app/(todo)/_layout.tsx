@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
 
 export default function TodoStack() {
   return (
@@ -8,16 +8,16 @@ export default function TodoStack() {
         name="addTodo"
         options={{
           headerShown: false,
-          animation: 'default',
-          presentation: 'modal',
+          animation: "default",
+          presentation: "modal",
         }}
       />
       <Stack.Screen
         name="editTodo"
         options={{
           headerShown: false,
-          animation: 'default',
-          presentation: 'modal',
+          animation: "default",
+          presentation: "modal",
         }}
       />
     </Stack>
