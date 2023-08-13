@@ -1,6 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface Todo {
   id: number;
@@ -25,7 +25,7 @@ const updateTodoTitle = (todos: Todo[], id: number, title: string): Todo[] =>
 const updateTodoDescription = (
   todos: Todo[],
   id: number,
-  description: string,
+  description: string
 ): Todo[] =>
   todos.map((todo) => ({
     ...todo,
@@ -35,7 +35,7 @@ const updateTodoDescription = (
 const updateTodoDate = (
   todos: Todo[],
   id: number,
-  date: Date | undefined,
+  date: Date | undefined
 ): Todo[] =>
   todos.map((todo) => ({
     ...todo,
@@ -62,7 +62,7 @@ const addTodo = (
   title: string,
   description: string,
   date: Date | undefined,
-  time: Time,
+  time: Time
 ): Todo[] => [
   ...todos,
   {
@@ -81,6 +81,7 @@ type Store = {
   newTodoDescription: string;
   newTodoDate: undefined | Date;
   newTodoTime: Time;
+  doneHidden: boolean;
   addTodo: () => void;
   setNewTodoTitle: (title: string) => void;
   setNewTodoDescription: (description: string) => void;
@@ -93,19 +94,21 @@ type Store = {
   toggle: (id: number) => void;
   remove: (id: number) => void;
   load: (todos: Todo[]) => void;
+  setDoneHidden: (hidden: boolean) => void;
 };
 
-const useTodoStore = create<Store, [['zustand/persist', unknown]]>(
+const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
   persist(
     (set) => ({
       todos: [],
-      newTodoTitle: '',
-      newTodoDescription: '',
+      newTodoTitle: "",
+      newTodoDescription: "",
       newTodoDate: undefined,
       newTodoTime: { hours: 0, minutes: 0 },
+      doneHidden: false,
       addTodo() {
         set((state: Store) => {
-          if (state.newTodoTitle === '') return state;
+          if (state.newTodoTitle === "") return state;
           return {
             ...state,
             todos: addTodo(
@@ -113,10 +116,10 @@ const useTodoStore = create<Store, [['zustand/persist', unknown]]>(
               state.newTodoTitle,
               state.newTodoDescription,
               state.newTodoDate,
-              state.newTodoTime,
+              state.newTodoTime
             ),
-            newTodoTitle: '',
-            newTodoDescription: '',
+            newTodoTitle: "",
+            newTodoDescription: "",
             newTodoDate: undefined,
             newTodoTime: { hours: 0, minutes: 0 },
           };
@@ -188,12 +191,18 @@ const useTodoStore = create<Store, [['zustand/persist', unknown]]>(
           todos,
         }));
       },
+      setDoneHidden(hidden: boolean) {
+        set((state: Store) => ({
+          ...state,
+          doneHidden: hidden,
+        }));
+      },
     }),
     {
-      name: 'todo-storage',
+      name: "todo-storage",
       storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
+    }
+  )
 );
 
 export default useTodoStore;
