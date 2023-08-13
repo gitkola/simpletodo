@@ -9,6 +9,7 @@ export interface Todo {
   date: Date | undefined;
   time: Time;
   done: boolean;
+  color: string;
 }
 
 export interface Time {
@@ -48,6 +49,12 @@ const updateTodoTime = (todos: Todo[], id: number, time: Time): Todo[] =>
     time: todo.id === id ? time : todo.time,
   }));
 
+const updateTodoColor = (todos: Todo[], id: number, color: string): Todo[] =>
+  todos.map((todo) => ({
+    ...todo,
+    color: todo.id === id ? color : todo.color,
+  }));
+
 const toggleTodo = (todos: Todo[], id: number): Todo[] =>
   todos.map((todo) => ({
     ...todo,
@@ -72,6 +79,7 @@ const addTodo = (
     date,
     time,
     done: false,
+    color: "transparent",
   },
 ];
 
@@ -82,6 +90,7 @@ type Store = {
   newTodoDate: undefined | Date;
   newTodoTime: Time;
   doneHidden: boolean;
+  colorFilter: string;
   addTodo: () => void;
   setNewTodoTitle: (title: string) => void;
   setNewTodoDescription: (description: string) => void;
@@ -91,10 +100,12 @@ type Store = {
   updateDescription: (id: number, description: string) => void;
   updateDate: (id: number, date: Date | undefined) => void;
   updateTime: (id: number, time: Time) => void;
+  updateColor: (id: number, color: string) => void;
   toggle: (id: number) => void;
   remove: (id: number) => void;
   load: (todos: Todo[]) => void;
   setDoneHidden: (hidden: boolean) => void;
+  setColorFilter: (color: string) => void;
 };
 
 const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
@@ -106,6 +117,7 @@ const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
       newTodoDate: undefined,
       newTodoTime: { hours: 0, minutes: 0 },
       doneHidden: false,
+      colorFilter: "transparent",
       addTodo() {
         set((state: Store) => {
           if (state.newTodoTitle === "") return state;
@@ -173,6 +185,12 @@ const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
           todos: updateTodoTime(state.todos, id, time),
         }));
       },
+      updateColor(id: number, color: string) {
+        set((state: Store) => ({
+          ...state,
+          todos: updateTodoColor(state.todos, id, color),
+        }));
+      },
       toggle(id: number) {
         set((state: Store) => ({
           ...state,
@@ -195,6 +213,12 @@ const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
         set((state: Store) => ({
           ...state,
           doneHidden: hidden,
+        }));
+      },
+      setColorFilter(color: string) {
+        set((state: Store) => ({
+          ...state,
+          colorFilter: color,
         }));
       },
     }),
