@@ -5,12 +5,13 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Tabs } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { enGB, registerTranslation } from "react-native-paper-dates";
+import { FontAwesome5 } from "@expo/vector-icons";
 registerTranslation("en-GB", enGB);
 
 export {
@@ -59,9 +60,32 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Stack>
-            <Stack.Screen name="(todo)" options={{ headerShown: false }} />
-          </Stack>
+          <Tabs>
+            <Tabs.Screen
+              name="(tobuy)"
+              options={{
+                headerShown: false,
+                tabBarLabel: "ToBuy",
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome5
+                    name="shopping-cart"
+                    size={size}
+                    color={color}
+                  />
+                ),
+              }}
+            />
+            <Tabs.Screen
+              name="(todo)"
+              options={{
+                headerShown: false,
+                tabBarLabel: "ToDo",
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome5 name="list" size={size} color={color} />
+                ),
+              }}
+            />
+          </Tabs>
         </ThemeProvider>
       </PaperProvider>
     </GestureHandlerRootView>

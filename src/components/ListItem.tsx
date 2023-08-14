@@ -15,13 +15,16 @@ import formatTime from "@/src/utils/formatTime";
 import ColorCircle from "./ColorCircle";
 import colors from "../utils/colors";
 import ColorCircleContainer from "./ColorCircleContainer";
+import { Tobuy } from "../zustand/tobuyStore";
 
-export default function TodoItem({
-  todo,
+export default function ListItem({
+  listItem,
   index,
+  editListItemRoute,
 }: {
-  todo: Todo;
+  listItem: Todo | Tobuy;
   index: number;
+  editListItemRoute: string;
 }) {
   const { remove, toggle, updateColor, todos } = useTodoStore();
   const theme = useTheme();
@@ -32,7 +35,7 @@ export default function TodoItem({
 
   const deleteItem = () => {
     height.value = withTiming(0, { duration: 500 }, () => {
-      runOnJS(remove)(todo.id);
+      runOnJS(remove)(listItem.id);
     });
   };
 
@@ -42,7 +45,7 @@ export default function TodoItem({
         <ColorCircleContainer
           children={
             <ColorCircle
-              onPress={() => updateColor(todo.id, color)}
+              onPress={() => updateColor(listItem.id, color)}
               color={color}
             />
           }
@@ -101,15 +104,15 @@ export default function TodoItem({
             }}
           >
             <Checkbox.Android
-              status={todo.done ? "checked" : "unchecked"}
-              onPress={() => toggle(todo.id)}
+              status={listItem.done ? "checked" : "unchecked"}
+              onPress={() => toggle(listItem.id)}
             />
           </View>
           <TouchableOpacity
             onPress={() =>
               router.push({
-                pathname: "/(todo)/editTodo",
-                params: { id: todo.id },
+                pathname: editListItemRoute,
+                params: { id: listItem.id },
               })
             }
             style={{
@@ -126,43 +129,43 @@ export default function TodoItem({
                     color: theme.colors.onSurface,
                   }}
                 >
-                  {todo.title}
+                  {listItem.title}
                 </Text>
-                {todo.description && (
+                {listItem.description && (
                   <Text
                     style={{
                       fontSize: 16,
                       color: theme.colors.onSurfaceDisabled,
                     }}
                   >
-                    {todo.description}
+                    {listItem.description}
                   </Text>
                 )}
                 <HStack spacing={8}>
-                  {todo.date && (
+                  {"date" in listItem && listItem.date && (
                     <Text
                       style={{
                         color: theme.colors.onSurfaceDisabled,
                         fontSize: 12,
                       }}
                     >
-                      {new Date(todo.date).toLocaleDateString()}
+                      {new Date(listItem.date).toLocaleDateString()}
                     </Text>
                   )}
-                  {todo.date && (
+                  {"time" in listItem && listItem.date && (
                     <Text
                       style={{
                         color: theme.colors.onSurfaceDisabled,
                         fontSize: 12,
                       }}
                     >
-                      {formatTime(todo.time.hours)}:
-                      {formatTime(todo.time.minutes)}
+                      {formatTime(listItem.time.hours)}:
+                      {formatTime(listItem.time.minutes)}
                     </Text>
                   )}
                 </HStack>
               </View>
-              <ColorCircle color={todo.color} />
+              <ColorCircle color={listItem.color} />
             </HStack>
           </TouchableOpacity>
         </HStack>
