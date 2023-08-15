@@ -8,7 +8,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Tabs } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import { PaperProvider } from "react-native-paper";
+import { PaperProvider, useTheme } from "react-native-paper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -53,6 +53,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const theme = useTheme();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -60,7 +61,11 @@ function RootLayoutNav() {
         <ThemeProvider
           value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
-          <Tabs>
+          <Tabs
+            screenOptions={{
+              tabBarActiveTintColor: theme.colors.primary,
+            }}
+          >
             <Tabs.Screen
               name="(tobuy)"
               options={{

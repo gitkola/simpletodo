@@ -9,6 +9,9 @@ type ListProps = {
   doneHidden: boolean;
   colorFilter: string;
   editListItemRoute: string;
+  remove: (id: number) => void;
+  toggle: (id: number) => void;
+  updateColor: (id: number, color: string) => void;
 };
 
 export default function List({
@@ -16,6 +19,9 @@ export default function List({
   doneHidden,
   colorFilter,
   editListItemRoute,
+  remove,
+  toggle,
+  updateColor,
 }: ListProps) {
   const theme = useTheme();
   const doneFiltered = doneHidden ? list.filter((item) => !item.done) : list;
@@ -32,6 +38,10 @@ export default function List({
           listItem={item}
           index={index}
           editListItemRoute={editListItemRoute}
+          remove={remove}
+          toggle={toggle}
+          updateColor={updateColor}
+          list={list}
         />
       )}
       style={{ flex: 1, backgroundColor: theme.colors.background }}

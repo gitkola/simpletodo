@@ -2,8 +2,16 @@ import useTobuyStore from "@/src/zustand/tobuyStore";
 import ScreenList from "@/src/screens/ScreenList";
 
 export default function Tobuy() {
-  const { setDoneHidden, setColorFilter, doneHidden, colorFilter, tobuys } =
-    useTobuyStore();
+  const {
+    setDoneHidden,
+    setColorFilter,
+    doneHidden,
+    colorFilter,
+    tobuys,
+    remove,
+    toggle,
+    updateColor,
+  } = useTobuyStore();
 
   return (
     <ScreenList
@@ -15,6 +23,9 @@ export default function Tobuy() {
       list={tobuys}
       addToListRoute="/(tobuy)/addTobuy"
       editListItemRoute="/(tobuy)/editTobuy"
+      remove={remove}
+      toggle={toggle}
+      updateColor={updateColor}
     />
   );
 }

@@ -20,6 +20,9 @@ type ScreenListProps = {
   list: Todo[] | Tobuy[];
   addToListRoute: string;
   editListItemRoute: string;
+  remove: (id: number) => void;
+  toggle: (id: number) => void;
+  updateColor: (id: number, color: string) => void;
 };
 
 export default function ScreenList({
@@ -31,6 +34,9 @@ export default function ScreenList({
   list,
   addToListRoute,
   editListItemRoute,
+  remove,
+  toggle,
+  updateColor,
 }: ScreenListProps) {
   const { top } = useSafeAreaInsets();
   const theme = useTheme();
@@ -49,7 +55,12 @@ export default function ScreenList({
         safeAreaInsets={{ top }}
         style={{ height: 100, backgroundColor: theme.colors.primary }}
       >
-        <Appbar.Content title={headerTitle} color={theme.colors.onPrimary} />
+        <Appbar.Action icon={{}} />
+        <Appbar.Action icon={{}} />
+        <Appbar.Content
+          title={`${headerTitle} (${list.length})`}
+          color={theme.colors.onPrimary}
+        />
         <Appbar.Action
           icon={!doneHidden ? "filter-outline" : "filter-off-outline"}
           iconColor={theme.colors.onPrimary}
@@ -88,6 +99,9 @@ export default function ScreenList({
         doneHidden={doneHidden}
         colorFilter={colorFilter}
         editListItemRoute={editListItemRoute}
+        remove={remove}
+        toggle={toggle}
+        updateColor={updateColor}
       />
       <FAB
         icon={"plus"}

@@ -1,5 +1,5 @@
 import { HStack, IconButton } from "@react-native-material/core";
-import useTodoStore, { Todo } from "@/src/zustand/todoStore";
+import { Todo } from "@/src/zustand/todoStore";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Checkbox, Divider, Text, useTheme } from "react-native-paper";
 import { View, Dimensions } from "react-native";
@@ -21,12 +21,19 @@ export default function ListItem({
   listItem,
   index,
   editListItemRoute,
+  remove,
+  toggle,
+  updateColor,
+  list,
 }: {
   listItem: Todo | Tobuy;
   index: number;
   editListItemRoute: string;
+  remove: (id: number) => void;
+  toggle: (id: number) => void;
+  updateColor: (id: number, color: string) => void;
+  list: Todo[] | Tobuy[];
 }) {
-  const { remove, toggle, updateColor, todos } = useTodoStore();
   const theme = useTheme();
   const itemHeight = 60;
 
@@ -170,7 +177,7 @@ export default function ListItem({
           </TouchableOpacity>
         </HStack>
       </Swipeable>
-      {index === todos.length - 1 && <Divider />}
+      {index === list.length - 1 && <Divider />}
     </Animated.View>
   );
 }
