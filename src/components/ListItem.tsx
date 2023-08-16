@@ -16,6 +16,7 @@ import ColorCircle from "./ColorCircle";
 import colors from "../utils/colors";
 import ColorCircleContainer from "./ColorCircleContainer";
 import { Tobuy } from "../zustand/tobuyStore";
+import { useRef } from "react";
 
 export default function ListItem({
   listItem,
@@ -40,6 +41,8 @@ export default function ListItem({
   const height = useSharedValue<number>(60);
   const { width } = Dimensions.get("window");
 
+  const swipeable = useRef<Swipeable>(null);
+
   const deleteItem = () => {
     height.value = withTiming(0, { duration: 500 }, () => {
       runOnJS(remove)(listItem.id);
@@ -52,7 +55,10 @@ export default function ListItem({
         <ColorCircleContainer
           children={
             <ColorCircle
-              onPress={() => updateColor(listItem.id, color)}
+              onPress={() => {
+                updateColor(listItem.id, color);
+                swipeable?.current?.close();
+              }}
               color={color}
             />
           }
@@ -92,6 +98,7 @@ export default function ListItem({
     >
       {index === 0 && <Divider />}
       <Swipeable
+        ref={swipeable}
         renderRightActions={rightButtons}
         renderLeftActions={leftButtons}
       >
