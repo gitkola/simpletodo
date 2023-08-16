@@ -6,8 +6,6 @@ import ListItem from "./ListItem";
 
 type ListProps = {
   list: Todo[] | Tobuy[];
-  doneHidden: boolean;
-  colorFilter: string;
   editListItemRoute: string;
   remove: (id: number) => void;
   toggle: (id: number) => void;
@@ -16,22 +14,16 @@ type ListProps = {
 
 export default function List({
   list,
-  doneHidden,
-  colorFilter,
   editListItemRoute,
   remove,
   toggle,
   updateColor,
 }: ListProps) {
   const theme = useTheme();
-  const doneFiltered = doneHidden ? list.filter((item) => !item.done) : list;
-  const colorAndDoneFiltered =
-    colorFilter !== "transparent"
-      ? doneFiltered.filter((item) => item.color === colorFilter)
-      : doneFiltered;
+
   return (
     <FlatList
-      data={colorAndDoneFiltered}
+      data={list}
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item, index }) => (
         <ListItem

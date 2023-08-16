@@ -67,6 +67,16 @@ function RootLayoutNav() {
             }}
           >
             <Tabs.Screen
+              name="(todo)"
+              options={{
+                headerShown: false,
+                tabBarLabel: "ToDo",
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome5 name="list" size={size} color={color} />
+                ),
+              }}
+            />
+            <Tabs.Screen
               name="(tobuy)"
               options={{
                 headerShown: false,
@@ -77,16 +87,6 @@ function RootLayoutNav() {
                     size={size}
                     color={color}
                   />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="(todo)"
-              options={{
-                headerShown: false,
-                tabBarLabel: "ToDo",
-                tabBarIcon: ({ color, size }) => (
-                  <FontAwesome5 name="list" size={size} color={color} />
                 ),
               }}
             />

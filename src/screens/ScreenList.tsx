@@ -4,12 +4,14 @@ import { Appbar, FAB, useTheme, Menu } from "react-native-paper";
 import { router } from "expo-router";
 import { StatusBar } from "react-native";
 import { Todo } from "@/src/zustand/todoStore";
+import { Tobuy } from "@/src/zustand/tobuyStore";
 import { useState } from "react";
 import ColorCircle from "@/src/components/ColorCircle";
 import ColorCircleContainer from "@/src/components/ColorCircleContainer";
 import colors from "@/src/utils/colors";
-import { Tobuy } from "@/src/zustand/tobuyStore";
 import List from "../components/List";
+import { Share } from "react-native";
+import formatTime from "../utils/formatTime";
 
 type ScreenListProps = {
   setDoneHidden: (doneHidden: boolean) => void;
@@ -24,6 +26,37 @@ type ScreenListProps = {
   toggle: (id: number) => void;
   updateColor: (id: number, color: string) => void;
 };
+
+const generateShareMessage = (headerTitle: string, list: Todo[] | Tobuy[]) =>
+  `${headerTitle} (${list.length})\n${list
+    .map((item) => {
+      if ("date" in item) {
+        return (
+          (item.done ? "\u2611" : "\u2610") +
+          " " +
+          item.title +
+          " " +
+          item.description +
+          " " +
+          new Date(item?.date as unknown as string).toLocaleDateString() +
+          "  " +
+          formatTime(item.time?.hours) +
+          ":" +
+          formatTime(item.time?.minutes) +
+          "\n"
+        );
+      } else {
+        return (
+          (item.done ? "\u2611" : "\u2610") +
+          " " +
+          item.title +
+          " " +
+          item.description +
+          "\n"
+        );
+      }
+    })
+    .join("")}`;
 
 export default function ScreenList({
   setDoneHidden,
@@ -46,6 +79,12 @@ export default function ScreenList({
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
+  const doneFiltered = doneHidden ? list.filter((item) => !item.done) : list;
+  const colorAndDoneFiltered =
+    colorFilter !== "transparent"
+      ? doneFiltered.filter((item) => item.color === colorFilter)
+      : doneFiltered;
+
   return (
     <VStack fill>
       <StatusBar barStyle={"light-content"} />
@@ -55,16 +94,15 @@ export default function ScreenList({
         safeAreaInsets={{ top }}
         style={{ height: 100, backgroundColor: theme.colors.primary }}
       >
-        <Appbar.Action icon={{}} />
-        <Appbar.Action icon={{}} />
-        <Appbar.Content
-          title={`${headerTitle} (${list.length})`}
-          color={theme.colors.onPrimary}
-        />
         <Appbar.Action
           icon={!doneHidden ? "filter-outline" : "filter-off-outline"}
           iconColor={theme.colors.onPrimary}
           onPress={() => setDoneHidden(!doneHidden)}
+        />
+        <Appbar.Action icon={{}} />
+        <Appbar.Content
+          title={`${headerTitle} (${list.length})`}
+          color={theme.colors.onPrimary}
         />
         <Menu
           visible={visible}
@@ -93,11 +131,23 @@ export default function ScreenList({
             />
           ))}
         </Menu>
+        <Appbar.Action
+          icon={"share-outline"}
+          iconColor={theme.colors.onPrimary}
+          onPress={() => {
+            const message = generateShareMessage(
+              headerTitle,
+              colorAndDoneFiltered
+            );
+            Share.share({
+              title: `${headerTitle} (${colorAndDoneFiltered.length})`,
+              message,
+            });
+          }}
+        />
       </Appbar>
       <List
-        list={list}
-        doneHidden={doneHidden}
-        colorFilter={colorFilter}
+        list={colorAndDoneFiltered}
         editListItemRoute={editListItemRoute}
         remove={remove}
         toggle={toggle}
