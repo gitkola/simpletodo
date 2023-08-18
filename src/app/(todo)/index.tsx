@@ -1,7 +1,7 @@
 import useTodoStore from "@/src/zustand/todoStore";
-import ScreenList from "@/src/screens/ScreenList";
+import ScreenList, { Item } from "@/src/screens/ScreenList";
 
-export default function Todo() {
+export default function TodoScreen() {
   const {
     setDoneHidden,
     setColorFilter,
@@ -11,6 +11,7 @@ export default function Todo() {
     remove,
     toggle,
     updateColor,
+    setList,
   } = useTodoStore();
 
   return (
@@ -26,6 +27,7 @@ export default function Todo() {
       remove={remove}
       toggle={toggle}
       updateColor={updateColor}
+      setList={setList as (list: Item[]) => void}
     />
   );
 }

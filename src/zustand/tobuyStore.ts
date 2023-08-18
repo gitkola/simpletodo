@@ -78,7 +78,7 @@ type Store = {
   updateColor: (id: number, color: string) => void;
   toggle: (id: number) => void;
   remove: (id: number) => void;
-  load: (tobuys: Tobuy[]) => void;
+  setList: (tobuys: Tobuy[]) => void;
   setDoneHidden: (hidden: boolean) => void;
   setColorFilter: (color: string) => void;
 };
@@ -150,7 +150,7 @@ const useTobuyStore = create<Store, [["zustand/persist", unknown]]>(
           tobuys: removeTobuy(state.tobuys, id),
         }));
       },
-      load(tobuys: Tobuy[]) {
+      setList(tobuys: Tobuy[]) {
         set((state: Store) => ({
           ...state,
           tobuys,

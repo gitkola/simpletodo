@@ -11,6 +11,7 @@ export default function Tobuy() {
     remove,
     toggle,
     updateColor,
+    setList,
   } = useTobuyStore();
 
   return (
@@ -26,6 +27,7 @@ export default function Tobuy() {
       remove={remove}
       toggle={toggle}
       updateColor={updateColor}
+      setList={setList}
     />
   );
 }

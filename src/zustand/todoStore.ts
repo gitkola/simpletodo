@@ -103,7 +103,7 @@ type Store = {
   updateColor: (id: number, color: string) => void;
   toggle: (id: number) => void;
   remove: (id: number) => void;
-  load: (todos: Todo[]) => void;
+  setList: (todos: Todo[]) => void;
   setDoneHidden: (hidden: boolean) => void;
   setColorFilter: (color: string) => void;
 };
@@ -203,7 +203,7 @@ const useTodoStore = create<Store, [["zustand/persist", unknown]]>(
           todos: removeTodo(state.todos, id),
         }));
       },
-      load(todos: Todo[]) {
+      setList(todos: Todo[]) {
         set((state: Store) => ({
           ...state,
           todos,

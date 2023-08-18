@@ -13,21 +13,24 @@ import List from "../components/List";
 import { Share } from "react-native";
 import formatTime from "../utils/formatTime";
 
+export type Item = Todo | Tobuy;
+
 type ScreenListProps = {
   setDoneHidden: (doneHidden: boolean) => void;
   setColorFilter: (colorFilter: string) => void;
   doneHidden: boolean;
   colorFilter: string;
   headerTitle: string;
-  list: Todo[] | Tobuy[];
+  list: Item[];
   addToListRoute: string;
   editListItemRoute: string;
   remove: (id: number) => void;
   toggle: (id: number) => void;
   updateColor: (id: number, color: string) => void;
+  setList: (list: Item[]) => void;
 };
 
-const generateShareMessage = (headerTitle: string, list: Todo[] | Tobuy[]) =>
+const generateShareMessage = (headerTitle: string, list: Item[]) =>
   `${headerTitle} (${list.length})\n${list
     .map((item) => {
       if ("date" in item) {
@@ -70,6 +73,7 @@ export default function ScreenList({
   remove,
   toggle,
   updateColor,
+  setList,
 }: ScreenListProps) {
   const { top } = useSafeAreaInsets();
   const theme = useTheme();
@@ -86,7 +90,7 @@ export default function ScreenList({
       : doneFiltered;
 
   return (
-    <VStack fill>
+    <VStack fill style={{ backgroundColor: theme.colors.background }}>
       <StatusBar barStyle={"light-content"} />
       <Appbar
         elevated
@@ -152,6 +156,7 @@ export default function ScreenList({
         remove={remove}
         toggle={toggle}
         updateColor={updateColor}
+        setList={setList}
       />
       <FAB
         icon={"plus"}
