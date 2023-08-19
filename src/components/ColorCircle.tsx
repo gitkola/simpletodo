@@ -17,9 +17,9 @@ export default function ColorCircle({
           width: 24,
           height: 24,
           borderRadius: 24,
-          backgroundColor: theme.colors.onBackground,
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundColor: theme.colors.background,
+          borderWidth: 2,
+          borderColor: theme.colors.onBackground,
         }}
       >
         <View
@@ -27,18 +27,9 @@ export default function ColorCircle({
             width: 20,
             height: 20,
             borderRadius: 20,
-            backgroundColor: theme.colors.background,
+            backgroundColor: color,
           }}
-        >
-          <View
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 20,
-              backgroundColor: color,
-            }}
-          />
-        </View>
+        />
       </View>
     </TouchableOpacity>
   );
