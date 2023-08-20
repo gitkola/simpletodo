@@ -12,6 +12,7 @@ import colors from "@/src/utils/colors";
 import List from "../components/List";
 import { Share } from "react-native";
 import formatTime from "../utils/formatTime";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 export type Item = Todo | Tobuy;
 
@@ -75,6 +76,7 @@ export default function ScreenList({
   updateColor,
   setList,
 }: ScreenListProps) {
+  const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -94,16 +96,15 @@ export default function ScreenList({
       <StatusBar barStyle={"light-content"} />
       <Appbar
         elevated
-        mode="center-aligned"
+        // mode="center-aligned"
         safeAreaInsets={{ top }}
         style={{ height: 100, backgroundColor: theme.colors.primary }}
       >
         <Appbar.Action
-          icon={!doneHidden ? "filter-outline" : "filter-off-outline"}
+          icon={"menu"}
           iconColor={theme.colors.onPrimary}
-          onPress={() => setDoneHidden(!doneHidden)}
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         />
-        <Appbar.Action icon={{}} />
         <Appbar.Content
           title={`${headerTitle} (${list.length})`}
           color={theme.colors.onPrimary}
@@ -135,6 +136,11 @@ export default function ScreenList({
             />
           ))}
         </Menu>
+        <Appbar.Action
+          icon={!doneHidden ? "filter-outline" : "filter-off-outline"}
+          iconColor={theme.colors.onPrimary}
+          onPress={() => setDoneHidden(!doneHidden)}
+        />
         <Appbar.Action
           icon={"share-outline"}
           iconColor={theme.colors.onPrimary}

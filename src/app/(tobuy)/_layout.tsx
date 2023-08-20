@@ -1,21 +1,19 @@
 import { Stack } from "expo-router";
 
-export default function TodoStack() {
+export default function TobuyLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
+      <Stack.Screen name={"tobuy"} />
       <Stack.Screen
-        name="addTobuy"
+        name={"addTobuy"}
         options={{
-          headerShown: false,
           animation: "default",
           presentation: "modal",
         }}
       />
       <Stack.Screen
-        name="editTobuy"
+        name={"editTobuy"}
         options={{
-          headerShown: false,
           animation: "default",
           presentation: "modal",
         }}

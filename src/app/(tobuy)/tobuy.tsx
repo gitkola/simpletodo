@@ -1,7 +1,7 @@
 import useTobuyStore from "@/src/zustand/tobuyStore";
 import ScreenList from "@/src/screens/ScreenList";
 
-export default function Tobuy() {
+export default function TobuyScreen() {
   const {
     setDoneHidden,
     setColorFilter,
