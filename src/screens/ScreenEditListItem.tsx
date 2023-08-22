@@ -83,26 +83,25 @@ const ScreenEditListItem = ({
               multiline
             />
           </HStack>
-          {("date" in listItem && typeof date === "object") ||
-            (typeof date === "undefined" && (
-              <HStack items="center">
-                <DatePickerInput
-                  label={"Date"}
-                  onChange={(value) => {
-                    setDate(value);
-                  }}
-                  value={new Date(date || Date.now())}
-                  style={{
-                    flex: 1,
-                    fontSize: 18,
-                    backgroundColor: theme.colors.background,
-                    color: theme.colors.onBackground,
-                  }}
-                  inputMode="end"
-                  locale="en-GB"
-                />
-              </HStack>
-            ))}
+          {"time" in listItem && typeof time === "object" && time !== null && (
+            <HStack items="center">
+              <DatePickerInput
+                label={"Date"}
+                onChange={(value) => {
+                  setDate(value);
+                }}
+                value={new Date((date as Date) || Date.now())}
+                style={{
+                  flex: 1,
+                  fontSize: 18,
+                  backgroundColor: theme.colors.background,
+                  color: theme.colors.onBackground,
+                }}
+                inputMode="end"
+                locale="en-GB"
+              />
+            </HStack>
+          )}
           {"time" in listItem &&
             typeof time === "object" &&
             time !== null &&

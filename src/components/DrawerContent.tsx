@@ -24,7 +24,7 @@ export default function DrawerContent(props: DrawerContentComponentProps) {
         activeBackgroundColor={theme.colors.primaryContainer}
         inactiveTintColor={theme.colors.secondary}
         label={"ToDo"}
-        onPress={() => router.push("/(todo)/todo")}
+        onPress={() => router.push("/(todo)")}
         focused={props.state.routeNames[props.state.index] === "(todo)"}
       />
       <DrawerItem
